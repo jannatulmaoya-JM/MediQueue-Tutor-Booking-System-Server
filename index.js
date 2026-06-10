@@ -4,7 +4,7 @@ require('dotenv').config()
 const app = express();
 const port = 5000;
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = process.env.DB_URI;
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -31,7 +31,17 @@ async function server() {
 
       res.send(rersult);
     });
-    app.get 
+    app.get("/tutors/:tutorId",async (req,res) =>{
+      console.log(req.params.tutorId);
+      const tutorId = req.params.tutorId;
+      const query = {_id:new ObjectId(tutorId)};
+
+      console.log(query);
+      const result = await tutorsCollection.findOne(query);
+      //console.log(result);
+
+      res.send(result);
+    }) ;
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
