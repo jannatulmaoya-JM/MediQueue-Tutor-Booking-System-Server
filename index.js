@@ -20,7 +20,18 @@ async function server() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
+     const db = client.db ("medi-queue-tutor");
+    const tutorsCollection = db.collection("tutors");
+
+    app.get("/tutors", async (req,res) => {
+      const cursor = tutorsCollection.find();
+      const rersult = await cursor.toArray();
+      //console.log(rersult);
+
+      res.send(rersult);
+    });
+    app.get 
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
@@ -34,5 +45,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server is running on ${port} P`);
+  console.log(`Server is running on ${port} PORT`);
 });
