@@ -132,7 +132,7 @@ async function server() {
         const query = {};
 
         if (search) {
-          // name অথবা title দিয়ে search (তোমার DB তে title আছে)
+       
           query.$or = [
             { name: { $regex: search, $options: "i" } },
             { title: { $regex: search, $options: "i" } },
@@ -155,7 +155,7 @@ async function server() {
       }
     });
 
-    // GET my tutors (private)
+
     app.get("/tutors/my-tutors", verifyToken, async (req, res) => {
       try {
         const { email } = req.query;
@@ -167,7 +167,6 @@ async function server() {
       }
     });
 
-    // GET single tutor by ID
     app.get("/tutors/:tutorId", async (req, res) => {
       try {
         const result = await tutorsCollection.findOne({ _id: new ObjectId(req.params.tutorId) });
@@ -177,7 +176,6 @@ async function server() {
       }
     });
 
-    // POST add tutor (private)
     app.post("/tutors", verifyToken, async (req, res) => {
       try {
         const result = await tutorsCollection.insertOne(req.body);
@@ -187,7 +185,6 @@ async function server() {
       }
     });
 
-    // PUT update tutor (private)
     app.put("/tutors/:id", verifyToken, async (req, res) => {
       try {
         const result = await tutorsCollection.updateOne(
@@ -200,7 +197,6 @@ async function server() {
       }
     });
 
-    // PATCH decrease slot
     app.patch("/tutors/:id/decrease-slot", verifyToken, async (req, res) => {
       try {
         const tutor = await tutorsCollection.findOne({ _id: new ObjectId(req.params.id) });
@@ -217,8 +213,6 @@ async function server() {
         res.status(500).json({ message: err.message });
       }
     });
-
-    // DELETE tutor (private)
     app.delete("/tutors/:id", verifyToken, async (req, res) => {
       try {
         const result = await tutorsCollection.deleteOne({ _id: new ObjectId(req.params.id) });
